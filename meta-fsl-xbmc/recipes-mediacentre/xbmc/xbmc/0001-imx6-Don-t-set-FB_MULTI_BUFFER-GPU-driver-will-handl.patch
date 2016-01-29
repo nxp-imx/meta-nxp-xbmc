@@ -1,0 +1,29 @@
+From 0c9d2c7e2d52e3791f04f1c1f7ffdb38ce2e0f07 Mon Sep 17 00:00:00 2001
+From: Song Bing <bing.song@nxp.com>
+Date: Fri, 29 Jan 2016 10:18:39 +0800
+Subject: [PATCH] [imx6] Don't set FB_MULTI_BUFFER, GPU driver will handle it.
+
+Don't set FB_MULTI_BUFFER, GPU driver will handle it.
+
+Signed-off-by: Song Bing <bing.song@nxp.com>
+---
+ xbmc/windowing/egl/EGLNativeTypeIMX.cpp |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
+
+diff --git a/xbmc/windowing/egl/EGLNativeTypeIMX.cpp b/xbmc/windowing/egl/EGLNativeTypeIMX.cpp
+index 04cadc8..55ebc12 100644
+--- a/xbmc/windowing/egl/EGLNativeTypeIMX.cpp
++++ b/xbmc/windowing/egl/EGLNativeTypeIMX.cpp
+@@ -119,9 +119,6 @@ void CEGLNativeTypeIMX::Destroy()
+
+ bool CEGLNativeTypeIMX::CreateNativeDisplay()
+ {
+-  // Force double-buffering
+-  CEnvironment::setenv("FB_MULTI_BUFFER", "2", 0);
+-
+ #ifdef HAS_IMXVPU
+   // EGL will be rendered on fb0
+   m_display = fbGetDisplayByIndex(0);
+--
+1.7.9
+
