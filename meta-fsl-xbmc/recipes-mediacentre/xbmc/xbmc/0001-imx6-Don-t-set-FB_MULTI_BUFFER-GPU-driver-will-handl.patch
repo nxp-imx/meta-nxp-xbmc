@@ -5,6 +5,8 @@ Subject: [PATCH] [imx6] Don't set FB_MULTI_BUFFER, GPU driver will handle it.
 
 Don't set FB_MULTI_BUFFER, GPU driver will handle it.
 
+Upstream-Status: Inappropriate [i.MX specific]
+
 Signed-off-by: Song Bing <bing.song@nxp.com>
 ---
  xbmc/windowing/egl/EGLNativeTypeIMX.cpp |    3 ---
