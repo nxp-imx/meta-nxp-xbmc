@@ -9,7 +9,7 @@ The Steps:
    $ MACHINE=xxx source fsl-setup-release.sh -b <build directory> -e fb
 
 2. In your build folder, run the script xbmc-layer-setup.sh to hook XBMC layer
-   - The script will hook meta-stef and meta-fsl-xbmc into conf/bblayer.conf
+   - The script will hook meta-nxp-xbmc into conf/bblayer.conf
 
 3. Build your image with XBMC
    - bitbake xbmc-image
