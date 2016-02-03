@@ -1,15 +1,16 @@
 # This document describes the steps to hook XBMC layer for imx6 SOC family
 
 - i.MX6 supports XBMC in the FrameBuffer graphics backend.
-- Yocto layer for imx6 xbmc image -- meta-fsl-xbmc should included in your build
+- Yocto layer for imx6 xbmc image -- meta-nxp-xbmc should included in your build
 
 The Steps:
 
 1. Create the Framebuffer (FB) build folder by the configuration option "-e fb"
    $ MACHINE=xxx source fsl-setup-release.sh -b <build directory> -e fb
 
-2. In your build folder, run the script xbmc-layer-setup.sh to hook XBMC layer
+2. In your build folder, run the script nxp-xbmc-setup.sh to hook XBMC layer
+   $ source ../nxp-xbmc-setup.sh
    - The script will hook meta-nxp-xbmc into conf/bblayer.conf
 
 3. Build your image with XBMC
-   - bitbake xbmc-image
+   $ bitbake xbmc-image
