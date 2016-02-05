@@ -1,0 +1,53 @@
+From 83da3ff406f4b826165e47e2f3cba3a61b218510 Mon Sep 17 00:00:00 2001
+From: Jun Zhu <junzhu@nxp.com>
+Date: Fri, 5 Feb 2016 14:20:42 +0800
+Subject: [PATCH] fsl-rc-local: launch XBMC after bootup
+
+Signed-off-by: Jun Zhu <junzhu@nxp.com>
+---
+ recipes-fsl/fsl-rc-local/files/rc.local.etc    | 23 +++++++++++++++++++++++
+ recipes-fsl/fsl-rc-local/fsl-rc-local.bbappend |  2 ++
+ 2 files changed, 25 insertions(+)
+ create mode 100755 recipes-fsl/fsl-rc-local/files/rc.local.etc
+ create mode 100644 recipes-fsl/fsl-rc-local/fsl-rc-local.bbappend
+
+diff --git a/recipes-fsl/fsl-rc-local/files/rc.local.etc b/recipes-fsl/fsl-rc-local/files/rc.local.etc
+new file mode 100755
+index 0000000..bc3991f
+--- /dev/null
++++ b/recipes-fsl/fsl-rc-local/files/rc.local.etc
+@@ -0,0 +1,23 @@
++#!/bin/sh -e
++#
++# rc.local
++#
++# This script is executed at the end of each multiuser runlevel.
++# Make sure that the script will "exit 0" on success or any other
++# value on error.
++#
++# In order to enable or disable this script just change the execution
++# bits.
++#
++# By default this script does nothing.
++
++
++#/usr/sbin/NetworkManager
++#echo 0 >  /sys/class/graphics/fbcon/cursor_blink
++mkdir /tmp/temp
++export HOME=/home/root
++#sleep 2
++#/usr/bin/usynergy &  
++#/usr/bin/tvheadend -l /dev/null &
++
++/imx6/kodi/bin/xbmc &
+diff --git a/recipes-fsl/fsl-rc-local/fsl-rc-local.bbappend b/recipes-fsl/fsl-rc-local/fsl-rc-local.bbappend
+new file mode 100644
+index 0000000..a082a5a
+--- /dev/null
++++ b/recipes-fsl/fsl-rc-local/fsl-rc-local.bbappend
+@@ -0,0 +1,2 @@
++#Provide our own rc.local file
++FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+-- 
+1.9.1
+
