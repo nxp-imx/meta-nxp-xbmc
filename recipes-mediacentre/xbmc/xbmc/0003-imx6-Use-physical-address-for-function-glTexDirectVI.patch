@@ -1,0 +1,32 @@
+From a73272b51e67cece9dbe2beee260902d618a9240 Mon Sep 17 00:00:00 2001
+From: Song Bing <bing.song@nxp.com>
+Date: Thu, 18 Feb 2016 14:53:37 +0800
+Subject: [PATCH 3/3] [imx6] Use physical address for function
+ glTexDirectVIVMap().
+
+Use physical address for function glTexDirectVIVMap(). Or Kernel will
+report WARNING when VPU free frame buffer memory.
+
+Upstream-Status: Inappropriate [i.MX specific]
+
+Signed-off-by: Song Bing <bing.song@nxp.com>
+---
+ xbmc/cores/VideoRenderers/LinuxRendererGLES.cpp |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/xbmc/cores/VideoRenderers/LinuxRendererGLES.cpp b/xbmc/cores/VideoRenderers/LinuxRendererGLES.cpp
+index 81fe19b..1dc7506 100644
+--- a/xbmc/cores/VideoRenderers/LinuxRendererGLES.cpp
++++ b/xbmc/cores/VideoRenderers/LinuxRendererGLES.cpp
+@@ -2732,7 +2732,7 @@ void CLinuxRendererGLES::UploadIMXMAPTexture(int index)
+     glActiveTexture(GL_TEXTURE0);
+     glBindTexture(m_textureTarget, plane.id);
+ 
+-    GLuint physical = ~0U;
++    GLuint physical = (GLuint)IMXBuffer->m_phyAddr;
+     GLvoid *virt = (GLvoid*)IMXBuffer->m_VirtAddr;
+     glTexDirectVIVMap(m_textureTarget, IMXBuffer->m_iWidth, IMXBuffer->m_iHeight, GL_VIV_NV12,
+                       (GLvoid **)&virt, &physical);
+-- 
+1.7.9
+

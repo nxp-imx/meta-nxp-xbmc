@@ -7,6 +7,7 @@ IMX_PATCHES = ""
 IMX_PATCHES_mx6 = " \
               file://0001-imx6-Don-t-set-FB_MULTI_BUFFER-GPU-driver-will-handl.patch \
               file://0002-Don-t-free-texture-when-video-playback.patch \
+              file://0003-imx6-Use-physical-address-for-function-glTexDirectVI.patch \
 "
 SRC_URI += " ${IMX_PATCHES} "
 
