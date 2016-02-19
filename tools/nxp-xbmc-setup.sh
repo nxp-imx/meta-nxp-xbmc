@@ -1,5 +1,5 @@
 #!/bin/sh
-# The script will hook the Yocto XBMC layer into the image build
+# The script will hook the i.MX XBMC layer into the image build
 
 # Hook the layer into the bblayers.conf
 echo "Start to enable the XBMC layer "

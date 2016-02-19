@@ -10,5 +10,4 @@ SRC_URI = "git://github.com/juhovh/shairplay.git"
 SRCREV="c8920724b694ee2b35dcb104f0bf169eb8a858d9"
 S = "${WORKDIR}/git"
 
-
 FILES_${PN} += "${libdir}/*.so"
