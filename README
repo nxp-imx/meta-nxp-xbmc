@@ -13,4 +13,4 @@ The Steps:
    - The script will hook meta-nxp-xbmc into conf/bblayer.conf
 
 3. Build your image with XBMC
-   $ bitbake xbmc-image
+   $ bitbake nxp-image-xbmc-demo
