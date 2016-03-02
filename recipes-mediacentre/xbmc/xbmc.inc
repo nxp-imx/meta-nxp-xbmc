@@ -2,8 +2,13 @@ DESCRIPTION = "software media player and entertainment hub"
 
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://copying.txt;md5=8c8473d035f42f5883d82c5f6828eba7"
-DEPENDS = "ffmpeg mysql5 libsamplerate0 udev pulseaudio libvorbis boost libass mpeg2dec libmad libmodplug tiff yajl libtinyxml taglib libcdio jasper libmicrohttpd libssh samba rtmpdump samba swig-native libxslt libplist flac lzo lsb shairplay"
+DEPENDS = "ffmpeg mysql5 libsamplerate0 udev pulseaudio libvorbis boost libass libmodplug tiff yajl libtinyxml taglib libcdio jasper libmicrohttpd libssh samba rtmpdump samba swig-native libxslt libplist flac lzo lsb shairplay"
 DEPENDS_append_mx6 = " virtual/kernel virtual/libgles2 virtual/egl imx-vpuwrap libcec"
+
+PACKAGECONFIG ?= "${@bb.utils.contains("LICENSE_FLAGS_WHITELIST", "commercial_libmad", "libmad", "", d)} \
+                  ${@bb.utils.contains("LICENSE_FLAGS_WHITELIST", "commercial_mpeg2dec", "mpeg2dec", "", d)}"
+PACKAGECONFIG[libmad] = ",,libmad,libmad"
+PACKAGECONFIG[mpeg2dec] = ",,mpeg2dec,mpeg2dec"
 
 INC_PR = "r1"
 
@@ -80,9 +85,7 @@ RRECOMMENDS_${PN} = " python-stringold \
                       glibc-gconv-cp1252 \
                       libcurl \
                       rtmpdump \
-                      libmad \
                       libass \
-                      mpeg2dec \
                       libcec \
                       kernel \
                       glibc-gconv-ibm850 \
