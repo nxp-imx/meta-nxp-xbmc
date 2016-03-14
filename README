@@ -5,12 +5,18 @@
 
 The Steps:
 
-1. Create the Framebuffer (FB) build folder by the configuration option "-e fb"
-   $ MACHINE=xxx source fsl-setup-release.sh -b <build directory> -e fb
+1. Download the BSP Yocto Project Environment into your directory:
+   $: mkdir imx-xbmc-demo
+   $: cd imx-xbmc-demo
+   $: repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-4.1.15-1.0.0-xbmc
+   $: repo sync
 
-2. In your build folder, run the script nxp-xbmc-setup.sh to hook XBMC layer
-   $ source ../nxp-xbmc-setup.sh
-   - The script will hook meta-nxp-xbmc into conf/bblayer.conf
+2. Create the Framebuffer (FB) build folder by the DISTRO configuration option "fsl-imx-fb"
+   $: MACHINE=imx6qpsabresd DISTRO=fsl-imx-fb source ./fsl-setup-release.sh -b <build directory>
 
-3. Build your image with XBMC
-   $ bitbake nxp-image-xbmc-demo
+3. In your build folder, run the script nxp-xbmc-setup.sh to hook XBMC layer.
+   And it will hook meta-nxp-xbmc into conf/bblayer.conf
+   $: source ../nxp-xbmc-setup.sh
+
+4. Build your image with XBMC
+   $: bitbake nxp-image-xbmc-demo
