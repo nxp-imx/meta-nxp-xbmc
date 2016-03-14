@@ -1,22 +1,39 @@
-# This document describes the steps to hook XBMC layer for imx6 SOC family
+NXP Yocto Support for XBMC
+=====================================
 
-- i.MX6 supports XBMC in the FrameBuffer graphics backend.
-- Yocto Project layer -- meta-nxp-xbmc should be included in i.MX6 XBMC build
+This Yocto layer provides support for building XBMC on NXP i.MX6 with GPU hardware.
+It has only been tested on the i.MX6 QualPlus SabreSD board with FrameBuffer backend. 
+Any other configuration is not supported.
 
-The Steps:
+Quick Start Guide
+-----------------
+To get the i.MX6 BSP you need to have `repo` installed and use it as:
 
-1. Download the BSP Yocto Project Environment into your directory:
-   $: mkdir imx-xbmc-demo
-   $: cd imx-xbmc-demo
-   $: repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-4.1.15-1.0.0-xbmc
-   $: repo sync
+Install the `repo` utility:
+   $ mkdir ~/bin
+   $ curl http://commondatastorage.googleapis.com/git-repo-downloads/repo  > ~/bin/repo
+   $ chmod a+x ~/bin/repo
+   $ PATH=${PATH}:~/bin
 
-2. Create the Framebuffer (FB) build folder by the DISTRO configuration option "fsl-imx-fb"
-   $: MACHINE=imx6qpsabresd DISTRO=fsl-imx-fb source ./fsl-setup-release.sh -b <build directory>
+Install the i.MX6 BSP Yocto Project Environment into your directory:
+   $ mkdir imx-xbmc-demo
+   $ cd imx-xbmc-demo
+   $ repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-4.1.15-1.0.0-xbmc
 
-3. In your build folder, run the script nxp-xbmc-setup.sh to hook XBMC layer.
-   And it will hook meta-nxp-xbmc into conf/bblayer.conf
-   $: source ../nxp-xbmc-setup.sh
+Download the Yocto layers (as specified by the default repo manifest):
+   $ repo sync
 
-4. Build your image with XBMC
-   $: bitbake nxp-image-xbmc-demo
+Configure the build (These scripts should be run only once for a specific build directory):
+   $ DISTRO=fsl-imx-fb MACHINE=imx6qpsabresd source ./fsl-setup-release.sh -b xbmc_fb
+   $ source ../nxp-xbmc-setup.sh
+
+Start the XBMC build:
+   $ bitbake nxp-image-xbmc-demo
+
+
+End User License Agreement
+--------------------------
+During the i.MX Yocto Community BSP setup-environment process, the NXP i.MX End User License Agreement (EULA)
+is displayed. To continue, users must agree to the conditions of this license. The agreement to the terms allows the
+Yocto build to untar packages from the NXP mirror. Please read this license agreement carefully during the
+setup process because, once accepted, all further work in the Yocto environment is tied to this accepted agreement.
