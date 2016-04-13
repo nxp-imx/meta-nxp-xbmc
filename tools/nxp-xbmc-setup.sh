@@ -5,8 +5,8 @@
 echo -e "\n=============================================================================="
 echo " This is a demostration setup for XBMC on i.MX6 which has a GPU hardware."
 echo " The Demo shows XBMC user interface with Frame Buffer graphical backend."
-echo " As the setup will integrate the COMMERCAIL_WHITE_LIST as ffmpeg/libmad/mpeg2dec,
-echo " the build is limited for evaluation only and has NO Support."
+echo " This setup integrates the COMMERCAIL_WHITE_LIST for ffmpeg/libmad/mpeg2dec,"
+echo " the build is limited for evaluation only and has No Support."
 echo -e "===============================================================================\n "
 
 # Hook the layer into the bblayers.conf
