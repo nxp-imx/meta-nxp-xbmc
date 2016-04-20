@@ -1,0 +1,209 @@
+From 2e9b65955ea31dc0591c44b5135258010f4dacd8 Mon Sep 17 00:00:00 2001
+From: Song Bing <b06498@freescale.com>
+Date: Tue, 12 Apr 2016 14:10:27 +0800
+Subject: [PATCH] [DCIC] Add get vsync support for XBMC.
+
+Add get vsync support for XBMC.
+The patch is get from git://github.com/osmc/vero-linux.git
+
+Signed-off-by: Song Bing bing.song@nxp.com
+---
+ drivers/video/fbdev/mxc/mxc_dcic.c | 84 +++++++++++++++++++++++++++++++++-----
+ include/uapi/linux/mxc_dcic.h      |  2 +
+ 2 files changed, 76 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/video/fbdev/mxc/mxc_dcic.c b/drivers/video/fbdev/mxc/mxc_dcic.c
+index cae872a..392e09c 100644
+--- a/drivers/video/fbdev/mxc/mxc_dcic.c
++++ b/drivers/video/fbdev/mxc/mxc_dcic.c
+@@ -52,6 +52,11 @@
+ #define FB_SYNC_OE_LOW_ACT		0x80000000
+ #define FB_SYNC_CLK_LAT_FALL	0x40000000
+ 
++static wait_queue_head_t mxc_dcic_wait;
++static int mxc_dcic_vsync;
++static int mxc_dcic_irq;
++static unsigned long mxc_dcic_counter;
++
+ static const struct dcic_mux imx6q_dcic0_mux[] = {
+ 	{
+ 		.dcic = DCIC_IPU1_DI0,
+@@ -231,13 +236,13 @@ static bool roi_configure(struct dcic_data *dcic, struct roi_params *roi_param)
+ 	u32 val;
+ 
+ 	if (roi_param->roi_n < 0 || roi_param->roi_n >= 16) {
+-		printk(KERN_ERR "Error, Wrong ROI number %d\n", roi_param->roi_n);
++		pr_err("Error, Wrong ROI number %d\n", roi_param->roi_n);
+ 		return false;
+ 	}
+ 
+ 	if (roi_param->end_x <= roi_param->start_x ||
+ 			roi_param->end_y <= roi_param->start_y) {
+-		printk(KERN_ERR "Error, Wrong ROI\n");
++		pr_err("Error, Wrong ROI\n");
+ 		return false;
+ 	}
+ 
+@@ -277,7 +282,7 @@ static void dcic_int_disable(struct dcic_data *dcic)
+ 
+ 	/* Disable both function and error interrupt */
+ 	val = readl(&dcic->regs->dcicic);
+-	val = DCICIC_ERROR_INT_DISABLE | DCICIC_FUN_INT_DISABLE;
++	val |= DCICIC_ERROR_INT_DISABLE | DCICIC_FUN_INT_DISABLE;
+ 	writel(val, &dcic->regs->dcicic);
+ }
+ 
+@@ -290,20 +295,30 @@ static irqreturn_t dcic_irq_handler(int irq, void *data)
+ 
+ 	dcic->result = dcics & 0xffff;
+ 
+-	dcic_int_disable(dcic);
++	if (!mxc_dcic_vsync)
++		dcic_int_disable(dcic);
++	else {
++		mxc_dcic_irq = 1;
++		mxc_dcic_counter++;
++	}
+ 
+ 	/* clean dcic interrupt state */
+ 	writel(DCICS_FI_STAT_PENDING, &dcic->regs->dcics);
+ 	writel(dcics, &dcic->regs->dcics);
+ 
++	if (mxc_dcic_vsync) {
++		wake_up(&mxc_dcic_wait);
++		return IRQ_HANDLED;
++	}
++
+ 	for (i = 0; i < 16; i++) {
+-		printk(KERN_INFO "ROI=%d,crcRS=0x%x, crcCS=0x%x\n", i,
++		pr_debug("ROI=%d,crcRS=0x%x, crcCS=0x%x\n", i,
+ 				readl(&dcic->regs->ROI[i].dcicrrs),
+ 				readl(&dcic->regs->ROI[i].dcicrcs));
+ 	}
+ 	complete(&dcic->roi_crc_comp);
+ 
+-	return 0;
++	return IRQ_HANDLED;
+ }
+ 
+ static int dcic_configure(struct dcic_data *dcic, unsigned int sync)
+@@ -364,7 +379,7 @@ static int dcic_init(struct device_node *np, struct dcic_data *dcic)
+ 
+ 	val = of_get_dcic_val(np, dcic);
+ 	if (val < 0) {
+-		printk(KERN_ERR "Error incorrect\n");
++		pr_err("Error incorrect\n");
+ 		return -1;
+ 	}
+ 
+@@ -420,19 +435,64 @@ static long dcic_ioctl(struct file *file,
+ 		}
+ 		dcic_disable(dcic);
+ 		break;
++	case DCIC_IOC_START_VSYNC:
++		mxc_dcic_vsync = 1;
++		mxc_dcic_irq = 0;
++		mxc_dcic_counter = 0;
++
++		// configure minimum roi block
++		roi_param.roi_n = 0;
++		roi_param.end_x = 1;
++		roi_param.start_x = 0;
++		roi_param.end_y = 1;
++		roi_param.start_y = 0;
++		roi_configure(dcic, &roi_param);
++
++		dcic_enable(dcic);
++		dcic_int_enable(dcic);
++		break;
++	case DCIC_IOC_STOP_VSYNC:
++		mxc_dcic_vsync = 0;
++		mxc_dcic_irq = 0;
++		init_completion(&dcic->roi_crc_comp);
++		wait_for_completion_interruptible_timeout(&dcic->roi_crc_comp, 1 * HZ);
++		dcic_disable(dcic);
++		break;
+ 	default:
+-		printk(KERN_ERR "%s, Unsupport cmd %d\n", __func__, cmd);
++		pr_err("%s, Unsupport cmd %d\n", __func__, cmd);
+ 		break;
+      }
+      return ret;
+ }
+ 
++static ssize_t dcic_read(struct file *file, char __user *buf, size_t count,
++			    loff_t *ppos)
++{
++	int ret = 0;
++
++	do {
++		if (mxc_dcic_irq) {
++			count = min(sizeof(unsigned long), count);
++			ret = copy_to_user(buf, &mxc_dcic_counter, count) ? -EFAULT : count;
++			mxc_dcic_irq = 0;
++			break;
++		}
++		if (file->f_flags & O_NONBLOCK) {
++			ret = -EAGAIN;
++		}
++		else if (wait_event_interruptible(mxc_dcic_wait, mxc_dcic_irq))
++			ret = -ERESTARTSYS;
++	} while(!ret);
++
++	return ret;
++}
+ 
+ static const struct file_operations mxc_dcic_fops = {
+ 	.owner = THIS_MODULE,
+ 	.open = dcic_open,
+ 	.release = dcic_release,
+ 	.unlocked_ioctl = dcic_ioctl,
++	.read = dcic_read,
+ };
+ 
+ static int dcic_probe(struct platform_device *pdev)
+@@ -503,7 +563,7 @@ static int dcic_probe(struct platform_device *pdev)
+ 	mutex_init(&dcic->lock);
+ 	ret = dcic_init(np, dcic);
+ 	if (ret < 0) {
+-		printk(KERN_ERR "Failed init dcic\n");
++		pr_err("Failed init dcic\n");
+ 		goto ealloc;
+ 	}
+ 
+@@ -511,7 +571,7 @@ static int dcic_probe(struct platform_device *pdev)
+ 	name = dcic->buses[dcic->bus_n].name;
+ 	dcic->major = register_chrdev(0, name, &mxc_dcic_fops);
+ 	if (dcic->major < 0) {
+-		printk(KERN_ERR "DCIC: unable to get a major for dcic\n");
++		pr_err("DCIC: unable to get a major for dcic\n");
+ 		ret = -EBUSY;
+ 		goto ealloc;
+ 	}
+@@ -546,6 +606,10 @@ static int dcic_probe(struct platform_device *pdev)
+ 		goto err_out_cdev;
+ 	}
+ 
++	init_waitqueue_head(&mxc_dcic_wait);
++	mxc_dcic_vsync = 0;
++	mxc_dcic_irq = 0;
++
+ 	return 0;
+ 
+ err_out_cdev:
+diff --git a/include/uapi/linux/mxc_dcic.h b/include/uapi/linux/mxc_dcic.h
+index 83e3e2c..cc5d165 100644
+--- a/include/uapi/linux/mxc_dcic.h
++++ b/include/uapi/linux/mxc_dcic.h
+@@ -33,6 +33,8 @@
+ #define DCIC_IOC_CONFIG_DCIC	_IO('D', 12)
+ #define DCIC_IOC_CONFIG_ROI		_IO('D', 13)
+ #define DCIC_IOC_GET_RESULT		_IO('D', 14)
++#define DCIC_IOC_START_VSYNC		_IO('D', 15)
++#define DCIC_IOC_STOP_VSYNC		_IO('D', 16)
+ 
+ struct roi_params {
+ 	unsigned int roi_n;
+-- 
+1.9.1
+
