@@ -1,0 +1,73 @@
+From 5ca486f92c249cb45c18ca13d9d1132e68aa75a7 Mon Sep 17 00:00:00 2001
+From: Song Bing <b06498@freescale.com>
+Date: Tue, 12 Apr 2016 14:15:53 +0800
+Subject: [PATCH] [Upgrade] Upgrade to git version.
+
+Upgrade to git version.
+Set default to VSync to sync video.
+
+Signed-off-by: Song Bing bing.song@nxp.com
+---
+ configure.ac                 | 32 ++++++++++++++++----------------
+ lib/libdvd/Makefile.in       |  1 -
+ system/settings/settings.xml |  2 +-
+ 3 files changed, 17 insertions(+), 18 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index c4e83a2..8b5c388 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1016,22 +1016,22 @@ if test "$use_mysql" = "yes"; then
+   AC_CHECK_LIB([mysqlclient], [main],, AC_MSG_ERROR($missing_library))
+ fi
+ 
+-
+-AC_LANG_PUSH([C++])
+-PKG_CHECK_MODULES([TINYXML], [tinyxml >= 2.6.2],
+-  [INCLUDES="$INCLUDES $TINYXML_CFLAGS"; LIBS="$LIBS $TINYXML_LIBS"],
+-  [AC_RUN_IFELSE(
+-   [AC_LANG_SOURCE([[
+-#include <stdlib.h>
+-#include <tinyxml.h>
+-
+-int main() {
+-  if (TIXML_MAJOR_VERSION < 2) exit(1);
+-  if (TIXML_MAJOR_VERSION == 2 && ( TIXML_MINOR_VERSION < 6 || ( TIXML_MINOR_VERSION == 6 && TIXML_PATCH_VERSION < 2 ))) exit(1);
+-}
+-    ]])],[AC_CHECK_LIB([tinyxml], [main],, AC_MSG_ERROR("tinyxml >= 2.6.2 not found"))], [AC_MSG_ERROR([tinyxml >= 2.6.2 not found])]
+-  )])
+-AC_LANG_POP([C++])
++AC_CHECK_LIB([tinyxml],     [main],, AC_MSG_ERROR($missing_library))
++#AC_LANG_PUSH([C++])
++#PKG_CHECK_MODULES([TINYXML], [tinyxml >= 2.6.2],
++#  [INCLUDES="$INCLUDES $TINYXML_CFLAGS"; LIBS="$LIBS $TINYXML_LIBS"],
++#  [AC_RUN_IFELSE(
++#   [AC_LANG_SOURCE([[
++##include <stdlib.h>
++##include <tinyxml.h>
++#
++#int main() {
++#  if (TIXML_MAJOR_VERSION < 2) exit(1);
++#  if (TIXML_MAJOR_VERSION == 2 && ( TIXML_MINOR_VERSION < 6 || ( TIXML_MINOR_VERSION == 6 && TIXML_PATCH_VERSION < 2 ))) exit(1);
++#}
++#    ]])],[AC_CHECK_LIB([tinyxml], [main],, AC_MSG_ERROR("tinyxml >= 2.6.2 not found"))], [AC_MSG_ERROR([tinyxml >= 2.6.2 not found])]
++#  )])
++#AC_LANG_POP([C++])
+ 
+ if test "${target_platform}" = "target_linux" || test "${target_platform}" = "target_raspberry_pi" || test "${target_platform}" = "target_android"; then
+   PKG_CHECK_MODULES([UUID], [uuid],, AC_MSG_ERROR(libuuid not found))
+diff --git a/lib/libdvd/Makefile.in b/lib/libdvd/Makefile.in
+index 00827cf..6165ef8 100644
+--- a/lib/libdvd/Makefile.in
++++ b/lib/libdvd/Makefile.in
+@@ -44,7 +44,6 @@ ifeq ($(BUILD_DVDCSS),1)
+ endif
+ 
+ 
+-SLIB = $(addprefix $(SYSDIR)/, $(SOS))
+ 
+ DISTCLEAN_FILES=libdvdcss/* libdvdnav/* libdvdread/*
+ 
+-- 
+1.9.1
+

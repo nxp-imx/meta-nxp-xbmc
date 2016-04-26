@@ -2,7 +2,7 @@ DESCRIPTION = "software media player and entertainment hub"
 
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://copying.txt;md5=8c8473d035f42f5883d82c5f6828eba7"
-DEPENDS = "ffmpeg mysql5 libsamplerate0 udev pulseaudio libvorbis boost libass libmodplug tiff yajl libtinyxml taglib libcdio jasper libmicrohttpd libssh samba rtmpdump samba swig-native libxslt libplist flac lzo lsb shairplay"
+DEPENDS = "ffmpeg mysql5 libsamplerate0 udev pulseaudio libvorbis boost libass libmodplug tiff yajl libtinyxml taglib libcdio jasper libmicrohttpd libssh samba rtmpdump samba swig-native libxslt libplist flac lzo lsb shairplay libdvdcss libdvdread libdvdnav"
 DEPENDS_append_mx6 = " virtual/kernel virtual/libgles2 virtual/egl imx-vpuwrap libcec"
 
 PACKAGECONFIG ?= "${@bb.utils.contains("LICENSE_FLAGS_WHITELIST", "commercial_libmad", "libmad", "", d)} \
@@ -19,7 +19,7 @@ S = "${WORKDIR}/git"
 inherit autotools lib_package pkgconfig gettext python-dir
 
 EXTRA_OECONF="ac_cv_path_JAVA_EXE=/usr/bin/java \
---prefix=/imx6/kodi --disable-x11 --disable-sdl --disable-xrandr --disable-gl --disable-vdpau --disable-vaapi --disable-openmax --enable-neon --enable-gles --enable-udev --enable-codec=imxvpu --disable-debug --disable-texturepacker --enable-airplay --enable-airtunes"
+--prefix=/imx6/kodi --disable-x11 --disable-sdl --disable-xrandr --disable-gl --disable-vdpau --disable-vaapi --disable-openmax --enable-neon --enable-gles --enable-udev --enable-codec=imxvpu --disable-debug --disable-texturepacker --enable-airplay --enable-airtunes --with-ffmpeg=shared"
 
 CPPFLAGS += " -I${STAGING_KERNEL_DIR}/include/uapi -I${STAGING_KERNEL_DIR}/include "
 CXXFLAGS += " -I${STAGING_KERNEL_DIR}/include/uapi -I${STAGING_KERNEL_DIR}/include "
@@ -37,6 +37,7 @@ do_configure() {
 
   cd ../git
   CXX=g++ sh bootstrap
+  make -C tools/depends/target/crossguid PREFIX=${STAGING_DIR_TARGET}/usr
   # oe_runconf
   # Call manually configure instead of oe_runconf because of specific prefix /imx6/xbmc...
   ${S}/configure  --build=${BUILD_SYS} \
@@ -62,7 +63,6 @@ RRECOMMENDS_${PN} = " python-stringold \
                       python-crypt \
                       python-netclient \
                       python-threading \
-                      python-elementtree \
                       python-xml \
                       python-dbus \
                       python-html \
@@ -96,6 +96,9 @@ RRECOMMENDS_${PN} = " python-stringold \
                       udev \
                       pulseaudio \
                       shairplay \
+                      libdvdcss \
+                      libdvdread \
+                      libdvdnav \
                       tzdata \
                       libvorbis \
                       flac \
@@ -105,15 +108,9 @@ RRECOMMENDS_${PN} = " python-stringold \
 
 FILES_${PN} += "/imx6 /usr/share/icons/hicolor"
 FILES_${PN}-dbg += " \
-                    /imx6/kodi/lib/kodi/system/players/paplayer/.debug/ \
-                    /imx6/kodi/lib/kodi/system/players/dvdplayer/.debug/ \
-                    /imx6/kodi/lib/kodi/system/.debug/ \
-                    /imx6/kodi/lib/kodi/addons/library.xbmc.gui/.debug/ \
-                    /imx6/kodi/lib/kodi/addons/library.xbmc.addon/.debug/ \
-                    /imx6/kodi/lib/kodi/addons/visualization.glspectrum/.debug/ \
-                    /imx6/kodi/lib/kodi/addons/library.xbmc.pvr/.debug/ \
-                    /imx6/kodi/lib/kodi/addons/visualization.waveform/.debug/ \
+                    /imx6/kodi/lib/kodi/*/*/*/.debug/ \
+                    /imx6/kodi/lib/kodi/*/.debug/ \
+                    /imx6/kodi/lib/kodi/*/*/.debug/ \
                     /imx6/kodi/lib/kodi/.debug/ \
-                    /imx6/kodi/lib/kodi/addons/library.xbmc.codec/.debug \
                    "
 
