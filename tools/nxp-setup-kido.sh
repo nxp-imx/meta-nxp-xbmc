@@ -21,7 +21,7 @@
 echo -e "\n----------------\n"
 kodi_exit_message()
 {
-   echo "kodi setup complete"
+   echo "Kodi setup complete"
 }
 
 kodi_usage()
@@ -38,7 +38,7 @@ kodi_usage()
 kodi_cleanup()
 {
     echo "Cleaning up variables"
-    unset BUILD_DIR OPTIND
+    unset BUILD_DIR OPTIND Kodi_DISTRO
     unset nxp_setup_help nxp_setup_error nxp_setup_flag
     unset kodi_usage kodi_cleanup kodi_exit_message
 }
@@ -68,8 +68,12 @@ if [ -z "$BUILD_DIR" ]; then
     BUILD_DIR=bld-kodi
 fi
 
-echo EULA=1 DISTRO=$DISTRO source $RELEASEPROGNAME -b $BUILD_DIR
-EULA=1 DISTRO=$DISTRO source $RELEASEPROGNAME -b $BUILD_DIR
+# XBMC only supports FB back-end
+unset Kodi_DISTRO
+Kodi_DISTRO="nxp-imx-xbmc-fb"
+
+echo EULA=1 DISTRO=$Kodi_DISTRO source $RELEASEPROGNAME -b $BUILD_DIR
+EULA=1 DISTRO=$Kodi_DISTRO source $RELEASEPROGNAME -b $BUILD_DIR
 
 # Statements
 echo -e "\n=============================================================================="
@@ -90,6 +94,8 @@ echo "Start to add license permission"
 echo "# for XBMC" >> conf/local.conf
 echo "LICENSE_FLAGS_WHITELIST += \" commercial_mpeg2dec \"" >> conf/local.conf
 echo "LICENSE_FLAGS_WHITELIST += \" commercial_libmad \"" >> conf/local.conf
+echo "LICENSE_FLAGS_WHITELIST += \" commercial_ffmpeg \"" >> conf/local.conf
+echo "LICENSE_FLAGS_WHITELIST += \" commercial_x264 \"" >> conf/local.conf
 echo >> conf/local.conf
 
 echo "XBMC layer is enabled. Check details in conf/bblayers.conf and conf/local.conf"
