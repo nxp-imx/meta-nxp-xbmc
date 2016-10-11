@@ -1,7 +1,7 @@
-NXP Yocto Support for XBMC
+NXP Yocto Support for Kodi (XBMC)
 =====================================
 
-This Yocto layer provides support for building XBMC on NXP i.MX6 with GPU hardware.
+This Yocto layer provides support for building Kodi(XBMC) on NXP i.MX6 with GPU hardware.
 It has only been tested on the i.MX6 QualPlus SabreSD board with FrameBuffer backend. 
 Any other configuration is not supported.
 
@@ -18,14 +18,13 @@ Install the `repo` utility:
 Install the i.MX6 BSP Yocto Project Environment into your directory:
    $ mkdir imx-xbmc-demo
    $ cd imx-xbmc-demo
-   $ repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-4.1.15-1.0.0_xbmc-demo
+   $ repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-4.1-krogoth -m imx-4.1.15-2.0.0-kodi-demo.xml
 
 Download the Yocto layers (as specified by the default repo manifest):
    $ repo sync
 
 Configure the build (These scripts should be run only once for a specific build directory):
-   $ DISTRO=fsl-imx-fb MACHINE=imx6qpsabresd source ./fsl-setup-release.sh -b xbmc_fb
-   $ source ../nxp-xbmc-setup.sh
+   $ DISTRO=fsl-imx-fb MACHINE=imx6qpsabresd source ./nxp-setup-kodi.sh -b xbmc_fb
 
 Start the XBMC build:
    $ bitbake nxp-image-xbmc-demo
