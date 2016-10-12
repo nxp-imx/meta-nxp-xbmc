@@ -3,12 +3,18 @@ DESCRIPTION = "software media player and entertainment hub"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://copying.txt;md5=8c8473d035f42f5883d82c5f6828eba7"
 DEPENDS = "ffmpeg mysql5 libsamplerate0 udev pulseaudio libvorbis boost libass libmodplug tiff yajl libtinyxml taglib libcdio jasper libmicrohttpd libssh samba rtmpdump samba swig-native libxslt libplist flac lzo lsb shairplay libdvdcss libdvdread libdvdnav"
-DEPENDS_append_mx6 = " virtual/kernel virtual/libgles2 virtual/egl imx-vpuwrap libcec"
+DEPENDS_append_mx6 = " virtual/kernel libcec"
 
 PACKAGECONFIG ?= "${@bb.utils.contains("LICENSE_FLAGS_WHITELIST", "commercial_libmad", "libmad", "", d)} \
                   ${@bb.utils.contains("LICENSE_FLAGS_WHITELIST", "commercial_mpeg2dec", "mpeg2dec", "", d)}"
+PACKAGECONFIG_append_mx6 = " mx6"
+PACKAGECONFIG_append_mx8 = " mx8"
+
 PACKAGECONFIG[libmad] = ",,libmad,libmad"
 PACKAGECONFIG[mpeg2dec] = ",,mpeg2dec,mpeg2dec"
+PACKAGECONFIG[mx6] = "--enable-codec=imxvpu,, virtual/libgles2 virtual/egl imx-vpuwrap,"
+PACKAGECONFIG[mx8] = "--enable-codec=imx8vpu,, virtual/libgles2 virtual/egl,"
+
 
 INC_PR = "r1"
 
@@ -19,7 +25,7 @@ S = "${WORKDIR}/git"
 inherit autotools lib_package pkgconfig gettext python-dir
 
 EXTRA_OECONF="ac_cv_path_JAVA_EXE=/usr/bin/java \
---prefix=/imx6/kodi --disable-x11 --disable-sdl --disable-xrandr --disable-gl --disable-vdpau --disable-vaapi --disable-openmax --enable-neon --enable-gles --enable-udev --enable-codec=imxvpu --disable-debug --disable-texturepacker --enable-airplay --enable-airtunes --with-ffmpeg=shared"
+--prefix=/imx6/kodi --disable-x11 --disable-sdl --disable-xrandr --disable-gl --disable-vdpau --disable-vaapi --disable-openmax --enable-neon --enable-gles --enable-udev --disable-debug --disable-texturepacker --enable-airplay --enable-airtunes --with-ffmpeg=shared"
 
 CPPFLAGS += " -I${STAGING_KERNEL_DIR}/include/uapi -I${STAGING_KERNEL_DIR}/include "
 CXXFLAGS += " -I${STAGING_KERNEL_DIR}/include/uapi -I${STAGING_KERNEL_DIR}/include "
