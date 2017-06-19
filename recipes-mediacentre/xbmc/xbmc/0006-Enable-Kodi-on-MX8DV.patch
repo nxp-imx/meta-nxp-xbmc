@@ -55,26 +55,6 @@ diff --git a/xbmc/linux/imx/IMX.cpp b/xbmc/linux/imx/IMX.cpp
 index e4284ac..3662119 100644
 --- a/xbmc/linux/imx/IMX.cpp
 +++ b/xbmc/linux/imx/IMX.cpp
-@@ -20,7 +20,9 @@
- 
- 
- #include "IMX.h"
-+#ifdef HAS_IMXVPU
- #include <linux/mxcfb.h>
-+#endif
- #include <algorithm>
- 
- /*
-@@ -29,7 +31,9 @@
-  *
-  */
- 
-+#ifdef HAS_IMXVPU
- #include <linux/mxc_dcic.h>
-+#endif
- #include <sys/ioctl.h>
- 
- #include "guilib/GraphicContext.h"
 @@ -88,6 +92,7 @@ void CIMX::Deinitialize()
  
  bool CIMX::UpdateDCIC()

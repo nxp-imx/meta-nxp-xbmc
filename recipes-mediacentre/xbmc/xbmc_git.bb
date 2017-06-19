@@ -7,6 +7,7 @@ IMX_PATCHES = " \
               file://0001-imx6-Don-t-set-FB_MULTI_BUFFER-GPU-driver-will-handl.patch \
               file://0005-Reslove-compile-fail.patch \
               file://0006-Enable-Kodi-on-MX8DV.patch \
+              file://0007-IMX-compilation-fix.patch \
 "
 SRC_URI += " ${IMX_PATCHES} "
 

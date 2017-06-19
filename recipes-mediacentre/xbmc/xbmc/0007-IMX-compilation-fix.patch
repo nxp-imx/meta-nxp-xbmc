@@ -1,0 +1,36 @@
+From d64bb28ededfe2db3eb6e15519f36ea5b1096535 Mon Sep 17 00:00:00 2001
+From: Matus Kral <matuskral@me.com>
+Date: Thu, 29 Dec 2016 19:34:49 +0100
+Subject: [PATCH] [IMX] compilation fix
+
+Upstream Status: Backport
+---
+ xbmc/linux/imx/IMX.h                    | 1 +
+ xbmc/windowing/egl/EGLNativeTypeIMX.cpp | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/xbmc/linux/imx/IMX.h b/xbmc/linux/imx/IMX.h
+index 1c5f15e..0134a4b 100644
+--- a/xbmc/linux/imx/IMX.h
++++ b/xbmc/linux/imx/IMX.h
+@@ -204,4 +204,5 @@ class CIMXFps
+     double               m_frameDuration;
+     bool                 m_hasPattern;
+     double               m_ptscorrection;
++    int                  m_patternLength;
+ };
+diff --git a/xbmc/windowing/egl/EGLNativeTypeIMX.cpp b/xbmc/windowing/egl/EGLNativeTypeIMX.cpp
+index 62631f6..d8c0983 100644
+--- a/xbmc/windowing/egl/EGLNativeTypeIMX.cpp
++++ b/xbmc/windowing/egl/EGLNativeTypeIMX.cpp
+@@ -29,6 +29,7 @@
+ #include <sys/ioctl.h>
+ #ifdef HAS_IMXVPU
+ #include <linux/mxcfb.h>
++#include "cores/VideoPlayer/DVDCodecs/Video/DVDVideoCodecIMX.h"
+ #endif
+ #include "utils/log.h"
+ #include "utils/RegExp.h"
+--
+2.7.4
+

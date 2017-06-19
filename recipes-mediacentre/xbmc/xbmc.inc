@@ -12,8 +12,8 @@ PACKAGECONFIG_append_mx8 = " mx8"
 
 PACKAGECONFIG[libmad] = ",,libmad,libmad"
 PACKAGECONFIG[mpeg2dec] = ",,mpeg2dec,mpeg2dec"
-PACKAGECONFIG[mx6] = "--enable-codec=imxvpu,, virtual/libgles2 virtual/egl imx-vpuwrap,"
-PACKAGECONFIG[mx8] = "--enable-codec=imx8vpu,, virtual/libgles2 virtual/egl,"
+PACKAGECONFIG[mx6] = "--enable-codec=imxvpu,, virtual/libgles2 virtual/egl virtual/libg2d imx-vpuwrap,"
+PACKAGECONFIG[mx8] = "--enable-codec=imx8vpu,, virtual/libgles2 virtual/egl virtual/libg2d,"
 
 
 INC_PR = "r1"
