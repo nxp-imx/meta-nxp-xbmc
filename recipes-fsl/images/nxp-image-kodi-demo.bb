@@ -12,8 +12,8 @@ EXTRA_IMAGE_FEATURES += " \
 
 IMAGE_INSTALL += " \
     fsl-rc-local \
-    packagegroup-nxp-xbmc \
+    packagegroup-nxp-kodi \
 "
 
-export IMAGE_BASENAME = "nxp-image-xbmc-demo"
+export IMAGE_BASENAME = "nxp-image-kodi-demo"
 

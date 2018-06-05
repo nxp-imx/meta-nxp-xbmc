@@ -16,18 +16,21 @@ Install the `repo` utility:
    $ PATH=${PATH}:~/bin
 
 Install the i.MX6 BSP Yocto Project Environment into your directory:
-   $ mkdir imx-xbmc-demo
-   $ cd imx-xbmc-demo
+   $ mkdir imx-kodi-demo
+   $ cd imx-kodi-demo
+
+# to be updated
    $ repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-morty -m imx-4.9.11-1.0.0-kodi-demo.xml 
+#
 
 Download the Yocto layers (as specified by the default repo manifest):
    $ repo sync
 
 Configure the build (These scripts should be run only once for a specific build directory):
-   $ DISTRO=fsl-imx-fb MACHINE=imx6qpsabresd source ./nxp-setup-kodi.sh -b xbmc_fb
+   $ DISTRO=fsl-imx-fb MACHINE=imx6qpsabresd source ./nxp-setup-kodi.sh -b build-kodi
 
 Start the XBMC build:
-   $ bitbake nxp-image-xbmc-demo
+   $ bitbake nxp-image-kodi-demo
 
 
 End User License Agreement

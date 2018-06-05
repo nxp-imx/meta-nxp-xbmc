@@ -1,21 +1,22 @@
 # Copyright (C) 2016 Freescale Semiconductor
 # Copyright 2017 NXP
+# Copyright 2018 NXP
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-DESCRIPTION = "Package group to add the packages providing XBMC support."
-SUMMARY = "Package group - xbmc"
+DESCRIPTION = "Package group to add the packages providing KODI support."
+SUMMARY = "Package group - kodi"
 LICENSE = "MIT"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
-XBMC_APPS = " \
-    xbmc \
+KODI_APPS = " \
+    kodi-imx \
     xbmc-nm-addon \
 "
 
-XBMC_MISC = " \
+KODI_MISC = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'networkmanager', '', d)} \
     dropbear \
     procps \
@@ -39,10 +40,10 @@ XBMC_MISC = " \
     pulseaudio-module-device-manager \
 "
 
-SOC_XBMC_MISC = ""
+SOC_KODI_MISC = ""
 
 RDEPENDS_${PN} = " \
-    ${XBMC_APPS} \
-    ${XBMC_MISC} \
-    ${SOC_XBMC_MISC} \
+    ${KODI_APPS} \
+    ${KODI_MISC} \
+    ${SOC_KODI_MISC} \
 "

@@ -1,4 +1,4 @@
-require xbmc.inc
+require kodi.inc
 
 SRC_URI = "git://github.com/xbmc/xbmc.git;branch=Krypton"
 SRCREV = "6abeebd5ba371547c8f04272296433f5e4e28e86"

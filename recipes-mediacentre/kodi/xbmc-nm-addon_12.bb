@@ -1,7 +1,7 @@
 DESCRIPTION = "XBMC network manager addon"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=7226e01ff2d738e2246d467214c409b9"
-DEPENDS += "xbmc"
+DEPENDS += "kodi-imx"
 
 PR = "r0"
 SRC_URI = "http://mirrors.xbmc.org/addons/frodo/script.linux.nm/script.linux.nm-0.1.4.zip"

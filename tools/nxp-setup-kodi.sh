@@ -70,7 +70,7 @@ fi
 
 # XBMC only supports FB back-end
 unset Kodi_DISTRO
-Kodi_DISTRO="nxp-imx-xbmc-fb"
+Kodi_DISTRO="nxp-imx-kodi-fb"
 
 echo EULA=1 DISTRO=$Kodi_DISTRO source $RELEASEPROGNAME -b $BUILD_DIR
 EULA=1 DISTRO=$Kodi_DISTRO source $RELEASEPROGNAME -b $BUILD_DIR
