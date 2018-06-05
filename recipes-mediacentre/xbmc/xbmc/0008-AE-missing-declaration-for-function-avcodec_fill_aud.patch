@@ -1,0 +1,26 @@
+From 07beb3e8c348a1904f93ddd0695f8685e0870100 Mon Sep 17 00:00:00 2001
+From: Cristinel Panfir <cristinel.panfir@nxp.com>
+Date: Thu, 24 May 2018 19:05:43 +0300
+Subject: [PATCH 1/2] AE: missing declaration for function
+ avcodec_fill_audio_frame
+
+Signed-off-by: Cristinel Panfir <cristinel.panfir@nxp.com>
+---
+ xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAEFilter.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAEFilter.cpp b/xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAEFilter.cpp
+index f13259a..8417ee1 100644
+--- a/xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAEFilter.cpp
++++ b/xbmc/cores/AudioEngine/Engines/ActiveAE/ActiveAEFilter.cpp
+@@ -28,6 +28,7 @@ extern "C" {
+ #include "libavfilter/buffersink.h"
+ #include "libavfilter/buffersrc.h"
+ #include "libswresample/swresample.h"
++#include "libavcodec/avcodec.h"
+ }
+ 
+ using namespace ActiveAE;
+-- 
+2.7.4
+

@@ -1,0 +1,26 @@
+From 964207d3eee968ea027c985a12e321ca0794a6f9 Mon Sep 17 00:00:00 2001
+From: Cristinel Panfir <cristinel.panfir@nxp.com>
+Date: Thu, 24 May 2018 19:06:26 +0300
+Subject: [PATCH 2/2] FTPParse.cpp: using namespace std for string declaration
+
+Signed-off-by: Cristinel Panfir <cristinel.panfir@nxp.com>
+---
+ xbmc/filesystem/FTPParse.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/xbmc/filesystem/FTPParse.cpp b/xbmc/filesystem/FTPParse.cpp
+index 415a25b..aef1318 100644
+--- a/xbmc/filesystem/FTPParse.cpp
++++ b/xbmc/filesystem/FTPParse.cpp
+@@ -34,6 +34,8 @@
+ #include <cmath>
+ #include "FTPParse.h"
+ 
++using namespace std;
++
+ CFTPParse::CFTPParse()
+ {
+   m_flagtrycwd = 0;
+-- 
+2.7.4
+
