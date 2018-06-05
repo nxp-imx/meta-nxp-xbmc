@@ -19,9 +19,7 @@ Install the i.MX6 BSP Yocto Project Environment into your directory:
    $ mkdir imx-kodi-demo
    $ cd imx-kodi-demo
 
-# to be updated
-   $ repo init -u git://git.freescale.com/imx/fsl-arm-yocto-bsp.git -b imx-morty -m imx-4.9.11-1.0.0-kodi-demo.xml 
-#
+   $ repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-rocko -m imx-4.9.88-2.0.0-kodi-demo.xml
 
 Download the Yocto layers (as specified by the default repo manifest):
    $ repo sync
