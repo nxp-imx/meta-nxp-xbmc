@@ -8,6 +8,7 @@ IMX_PATCHES = " \
               file://0005-Reslove-compile-fail.patch \
               file://0008-AE-missing-declaration-for-function-avcodec_fill_aud.patch \
               file://0009-FTPParse.cpp-using-namespace-std-for-string-declarat.patch \
+              file://0010-crossguid-Makefile-download-archive-without-certs.patch \
 "
 SRC_URI += " ${IMX_PATCHES} "
 

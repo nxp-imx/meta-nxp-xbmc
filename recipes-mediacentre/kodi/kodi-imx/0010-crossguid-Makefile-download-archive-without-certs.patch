@@ -1,0 +1,26 @@
+From 6aab87b1cec933a7e446a316ad04b171817218da Mon Sep 17 00:00:00 2001
+From: Cristinel Panfir <cristinel.panfir@nxp.com>
+Date: Thu, 24 May 2018 20:06:26 +0300
+Subject: [PATCH] crossguid/Makefile: download archive without certs
+
+Signed-off-by: Cristinel Panfir <cristinel.panfir@nxp.com>
+---
+ tools/depends/target/crossguid/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/depends/target/crossguid/Makefile b/tools/depends/target/crossguid/Makefile
+index 487ab2a..1abc217 100644
+--- a/tools/depends/target/crossguid/Makefile
++++ b/tools/depends/target/crossguid/Makefile
+@@ -18,7 +18,7 @@ else
+     PLATFORM = native
+     TARBALLS_LOCATION = $(ROOT_DIR)
+     BASE_URL := http://mirrors.kodi.tv/build-deps/sources
+-    RETRIEVE_TOOL := curl -Ls --create-dirs -f -O
++    RETRIEVE_TOOL := curl -Ls -k --create-dirs -f -O
+     ARCHIVE_TOOL := tar --strip-components=1 -xf
+   endif
+ endif
+-- 
+2.7.4
+
