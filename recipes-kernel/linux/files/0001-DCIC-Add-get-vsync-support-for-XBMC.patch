@@ -31,7 +31,7 @@ index cae872a..392e09c 100644
 @@ -231,13 +236,13 @@ static bool roi_configure(struct dcic_data *dcic, struct roi_params *roi_param)
  	u32 val;
  
- 	if (roi_param->roi_n < 0 || roi_param->roi_n >= 16) {
+ 	if (roi_param->roi_n >= 16) {
 -		printk(KERN_ERR "Error, Wrong ROI number %d\n", roi_param->roi_n);
 +		pr_err("Error, Wrong ROI number %d\n", roi_param->roi_n);
  		return false;
