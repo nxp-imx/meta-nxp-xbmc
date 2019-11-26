@@ -19,7 +19,7 @@ Install the i.MX6 BSP Yocto Project Environment into your directory:
    $ mkdir imx-kodi-demo
    $ cd imx-kodi-demo
 
-   $ repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-sumo -m imx-4.14.78-1.0.0_demo_kodi.xml
+   $ repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-thud -m imx-4.19.35-1.0.0_demo_kodi.xml
 
 Download the Yocto layers (as specified by the default repo manifest):
    $ repo sync
