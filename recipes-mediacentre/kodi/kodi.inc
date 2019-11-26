@@ -2,7 +2,7 @@ DESCRIPTION = "software media player and entertainment hub"
 
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://copying.txt;md5=8c8473d035f42f5883d82c5f6828eba7"
-DEPENDS = "cmake-native gperf-native unzip-native zip-native ffmpeg mysql5 libsamplerate0 udev pulseaudio libvorbis boost libass libmodplug tiff yajl libtinyxml taglib libcdio jasper libmicrohttpd libssh rtmpdump samba swig-native libxslt libplist flac lzo lsb shairplay libdvdcss libdvdread libdvdnav crossguid"
+DEPENDS = "cmake-native gperf-native unzip-native zip-native ffmpeg mysql5 libsamplerate0 udev pulseaudio libvorbis boost libass libmodplug tiff yajl libtinyxml taglib libcdio jasper libmicrohttpd libssh rtmpdump samba swig-native libxslt libplist flac lzo lsb shairplay libdvdcss libdvdread libdvdnav crossguid jsonschemabuilder-native"
 DEPENDS_append_mx6 = " virtual/kernel libcec"
 
 PACKAGECONFIG ?= "${@bb.utils.contains("LICENSE_FLAGS_WHITELIST", "commercial_libmad", "libmad", "", d)} \
