@@ -19,9 +19,13 @@ Install the i.MX6 BSP Yocto Project Environment into your directory:
    $ mkdir imx-kodi-demo
    $ cd imx-kodi-demo
 
-   $ repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-zeus -m imx-5.4.3-1.0.0_kodi.xml
-   or
-   $ repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-zeus -m imx-5.4.3-2.0.0_kodi.xml
+   $ repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-zeus -m <kodi_manifest>
+
+Here are the kodi manifests for zeus releases:
+imx-5.4.24-2.1.0_demo_kodi.xml
+imx-5.4.3-1.0.0_demo_kodi.xml
+imx-5.4.3-2.0.0_demo_kodi.xml
+imx-5.4.47-2.2.0_demo_kodi.xml
 
 Download the Yocto layers (as specified by the default repo manifest):
    $ repo sync
