@@ -26,6 +26,7 @@ imx-5.4.24-2.1.0_demo_kodi.xml
 imx-5.4.3-1.0.0_demo_kodi.xml
 imx-5.4.3-2.0.0_demo_kodi.xml
 imx-5.4.47-2.2.0_demo_kodi.xml
+imx-5.4.70-2.3.0_demo_kodi.xml
 
 Download the Yocto layers (as specified by the default repo manifest):
    $ repo sync
